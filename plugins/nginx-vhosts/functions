@@ -335,17 +335,17 @@ nginx_build_config() {
           PROXY_PORT="$PROXY_PORT" PROXY_SSL_PORT="$PROXY_SSL_PORT" RAW_TCP_PORTS="$RAW_TCP_PORTS"
           PROXY_PORT_MAP="$PROXY_PORT_MAP" PROXY_UPSTREAM_PORTS="$PROXY_UPSTREAM_PORTS")
 
-    # execute sigil template processing
-    xargs -i echo "-----> Configuring {}...(using $NGINX_TEMPLATE_SOURCE template)" <<< "$(echo "${SSL_VHOSTS}" "${NONSSL_VHOSTS}" | tr ' ' '\n' | sort -u)"
-    # echo "sigil ${SIGIL_PARAMS[@]}"
-    sigil "${SIGIL_PARAMS[@]}" | cat -s > "$NGINX_CONF"
+    if [[ -z "$DOKKU_APP_LISTENERS" ]]; then
+      if (is_deployed "$APP"); then
+        # execute sigil template processing
+        xargs -i echo "-----> Configuring {}...(using $NGINX_TEMPLATE_SOURCE template)" <<< "$(echo "${SSL_VHOSTS}" "${NONSSL_VHOSTS}" | tr ' ' '\n' | sort -u)"
+        sigil "${SIGIL_PARAMS[@]}" | cat -s > "$NGINX_CONF"
 
-    if (is_deployed "$APP"); then
-      dokku_log_info1 "Creating $SCHEME nginx.conf"
-      mv "$NGINX_CONF" "$DOKKU_ROOT/$APP/nginx.conf"
+        dokku_log_info1 "Creating $SCHEME nginx.conf"
+        mv "$NGINX_CONF" "$DOKKU_ROOT/$APP/nginx.conf"
+      fi
     else
-      dokku_log_info1 "App $APP has not been deployed. Skipping nginx config creation"
-      rm -f "$NGINX_CONF"
+      dokku_log_warn_quiet "No web listeners specified for $APP"
     fi
 
     if (is_deployed "$APP"); then
