@@ -277,7 +277,7 @@ nginx_build_config() {
     # shellcheck disable=SC2086
     trap 'rm -rf $NGINX_CONF $NGINX_BUILD_CONFIG_TMP_WORK_DIR > /dev/null' RETURN INT TERM EXIT
 
-    get_custom_nginx_template "$APP" "$CUSTOM_NGINX_TEMPLATE"
+    get_custom_nginx_template "$APP" "$CUSTOM_NGINX_TEMPLATE" 2> /dev/null
     if [[ -f "$CUSTOM_NGINX_TEMPLATE" ]]; then
       dokku_log_info1 'Overriding default nginx.conf with detected nginx.conf.sigil'
       local NGINX_TEMPLATE="$CUSTOM_NGINX_TEMPLATE"
