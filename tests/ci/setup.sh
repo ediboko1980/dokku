@@ -23,10 +23,15 @@ setup_circle() {
   SIGIL_PACKAGE_NAME="gliderlabs_sigil_${SIGIL_VERSION}_amd64.deb"
   docker run --rm --entrypoint cat "dokku:build" "/tmp/${SIGIL_PACKAGE_NAME}" > "build/$SIGIL_PACKAGE_NAME"
 
+  PROCFILE_VERSION=$(grep PROCFILE_VERSION Makefile | head -n1 | cut -d' ' -f3)
+  PROCFILE_UTIL_PACKAGE_NAME="procfile-util_${PROCFILE_VERSION}_amd64.deb"
+  curl -sL "https://github.com/josegonzalez/go-procfile-util/releases/download/v${PROCFILE_VERSION}/${PROCFILE_UTIL_PACKAGE_NAME}" -o "build/$PROCFILE_UTIL_PACKAGE_NAME"
+
   sudo dpkg -i "build/$HEROKUISH_PACKAGE_NAME"
   sudo dpkg -i "build/$PLUGN_PACKAGE_NAME"
   sudo dpkg -i "build/$SSHCOMMAND_PACKAGE_NAME"
   sudo dpkg -i "build/$SIGIL_PACKAGE_NAME"
+  sudo dpkg -i "build/$PROCFILE_UTIL_PACKAGE_NAME"
 
   sudo add-apt-repository -y ppa:nginx/stable
   sudo apt-get update
