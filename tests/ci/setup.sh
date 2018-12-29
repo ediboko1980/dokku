@@ -9,23 +9,23 @@ setup_circle() {
 
   HEROKUISH_VERSION=$(grep HEROKUISH_VERSION deb.mk | head -n1 | cut -d' ' -f3)
   HEROKUISH_PACKAGE_NAME="herokuish_${HEROKUISH_VERSION}_amd64.deb"
-  docker run --rm --entrypoint cat "dokku:build" "/tmp/${HEROKUISH_PACKAGE_NAME}" > "build/$HEROKUISH_PACKAGE_NAME"
+  curl -sL "https://packagecloud.io/dokku/dokku/packages/ubuntu/trusty/herokuish_${HEROKUISH_VERSION}_amd64.deb/download.deb" -o "build/${HEROKUISH_PACKAGE_NAME}"
 
   PLUGN_VERSION=$(grep PLUGN_VERSION deb.mk | head -n1 | cut -d' ' -f3)
   PLUGN_PACKAGE_NAME="plugn_${PLUGN_VERSION}_amd64.deb"
-  docker run --rm --entrypoint cat "dokku:build" "/tmp/${PLUGN_PACKAGE_NAME}" > "build/$PLUGN_PACKAGE_NAME"
+  curl -sL "https://packagecloud.io/dokku/dokku/packages/ubuntu/trusty/plugn_${PLUGN_VERSION}_amd64.deb/download.deb" -o "build/${PLUGN_PACKAGE_NAME}"
 
   SSHCOMMAND_VERSION=$(grep SSHCOMMAND_VERSION deb.mk | head -n1 | cut -d' ' -f3)
   SSHCOMMAND_PACKAGE_NAME="sshcommand_${SSHCOMMAND_VERSION}_amd64.deb"
-  docker run --rm --entrypoint cat "dokku:build" "/tmp/${SSHCOMMAND_PACKAGE_NAME}" > "build/$SSHCOMMAND_PACKAGE_NAME"
+  curl -sL "https://packagecloud.io/dokku/dokku/packages/ubuntu/trusty/sshcommand_${SSHCOMMAND_VERSION}_amd64.deb/download.deb" -o "build/${SSHCOMMAND_PACKAGE_NAME}"
 
   SIGIL_VERSION=$(grep SIGIL_VERSION deb.mk | head -n1 | cut -d' ' -f3)
-  SIGIL_PACKAGE_NAME="gliderlabs_sigil_${SIGIL_VERSION}_amd64.deb"
-  docker run --rm --entrypoint cat "dokku:build" "/tmp/${SIGIL_PACKAGE_NAME}" > "build/$SIGIL_PACKAGE_NAME"
+  SIGIL_PACKAGE_NAME="gliderlabs-sigil_${SIGIL_VERSION}_amd64.deb"
+  curl -sL "https://packagecloud.io/dokku/dokku/packages/ubuntu/trusty/gliderlabs-sigil_${SIGIL_VERSION}_amd64.deb/download.deb" -o "build/${SIGIL_PACKAGE_NAME}"
 
   PROCFILE_VERSION=$(grep PROCFILE_VERSION Makefile | head -n1 | cut -d' ' -f3)
   PROCFILE_UTIL_PACKAGE_NAME="procfile-util_${PROCFILE_VERSION}_amd64.deb"
-  curl -sL "https://github.com/josegonzalez/go-procfile-util/releases/download/v${PROCFILE_VERSION}/${PROCFILE_UTIL_PACKAGE_NAME}" -o "build/$PROCFILE_UTIL_PACKAGE_NAME"
+  curl -sL "https://packagecloud.io/dokku/dokku/packages/ubuntu/trusty/procfile-util_${PROCFILE_VERSION}_amd64.deb/download.deb" -o "build/${PROCFILE_UTIL_PACKAGE_NAME}"
 
   sudo dpkg -i "build/$HEROKUISH_PACKAGE_NAME"
   sudo dpkg -i "build/$PLUGN_PACKAGE_NAME"
