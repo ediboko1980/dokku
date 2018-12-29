@@ -36,6 +36,7 @@ setup_circle() {
   sudo add-apt-repository -y ppa:nginx/stable
   sudo apt-get update
   sudo apt-get -qq -y install nginx
+  sudo cp tests/dhparam.pem /etc/nginx/dhparam.pem
 
   echo "dokku dokku/hostname string dokku.me"              | sudo debconf-set-selections
   echo "dokku dokku/key_file string /root/.ssh/id_rsa.pub" | sudo debconf-set-selections
