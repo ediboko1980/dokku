@@ -28,5 +28,8 @@ jobs:
           no_output_timeout: 60m
       - store_artifacts:
           path: ./coverage.out
+      - store_artifacts:
+          path: ./test-results
+          destination: test-results
       - store_test_results:
           path: test-results
