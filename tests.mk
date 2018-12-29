@@ -210,6 +210,6 @@ test: setup-deploy-tests lint unit-tests deploy-tests
 
 test-ci:
 	mkdir -p test-results
-	@echo "executing tests: $(shell circleci tests glob tests/unit/*.bats | circleci tests split --split-by=timings | xargs)"
-	bats --formatter bats-format-junit -e -T -o test-results $(shell circleci tests glob tests/unit/*.bats | circleci tests split --split-by=timings | xargs)
+	@cd tests/unit && echo "executing tests: $(shell circleci tests glob *.bats | circleci tests split --split-by=timings | xargs)"
+	cd tests/unit && bats --formatter bats-format-junit -e -T -o ../../test-results $(shell circleci tests glob *.bats | circleci tests split --split-by=timings | xargs)
 	tests/organize-tests
